@@ -1,7 +1,7 @@
 import sys
-sys.path.append('./')
+sys.path.append('./')  #this  is add the current directory 
 
-from connection import db_session
+from connection import db_session 
 from model.sql_model import Todo
 import decoders.todo as decode
 
@@ -9,8 +9,9 @@ import decoders.todo as decode
 #create todo
 def create_todo(todo:str) -> dict:
     try:
-        req = Todo(todo) # from self.todo
-        db_session.add(req)
+        #creating new todo list
+        req = Todo(todo) # from self.todo , instance of the Todo class
+        db_session.add(req) 
         db_session.commit()
         return {
             'status': 'commit',
@@ -20,11 +21,17 @@ def create_todo(todo:str) -> dict:
         return {
             'status': 'error',
             'message': str(e)
-            }
+        }
+    
+
+
+# ---------------------------------------------------
+
+#fetcching all todos 
 def get_all():
     try:
-        res= db_session.query(Todo).all()
-        docs = decode.decode_todos(res)
+        res= db_session.query(Todo).all() #query all todo entries from the databse
+        docs = decode.decode_todos(res) #decode the retrieved todo data 
         return {
             'status': 'ok',
             'data': docs

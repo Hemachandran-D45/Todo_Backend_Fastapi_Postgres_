@@ -30,8 +30,8 @@ def create_todo(todo:str) -> dict:
 #fetcching all todos 
 def get_all():
     try:
-        res= db_session.query(Todo).all() #query all todo entries from the databse
-        docs = decode.decode_todos(res) #decode the retrieved todo data 
+        res = db_session.query(Todo).all() #query all todo entries from the databse #sql_model
+        docs = decode.decode_todos(res) #decode the retrieved todo data  # todo decode
         return {
             'status': 'ok',
             'data': docs
@@ -41,16 +41,92 @@ def get_all():
             'status': 'error',
             'message': str(e)
         }
+    
 
-#get all todo list
+#get get one
+def get_one(_id:int):
+    try:
+        criteria = {"_id":_id}
+        res = db_session.query(Todo).filter_by(**criteria).one_or_none() #query one todo entries from the databse #sql_model
+        if res is not None:
+            record = decode.decode(res)
+            return {
+                'status': 'ok',
+                'data':record
+            }
+        else:
+            return{
+                'status': 'error',
+                'message': f'Record with id {_id} not found'
+            }
+    except Exception as e:
+        return {
+            'status': 'error',
+            'message': str(e)
+        }
+    
+
 
 #update todo
 
+def update(_id:int, title:str):
+    try:
+        criteria = {"_id":_id}
+        res = db_session.query(Todo).filter_by(**criteria).one_or_none() #query one todo entries from the databse #sql_model
+        if res is not None:
+            res.todo = title
+            db_session.commit()
+            return {
+                'status': 'ok',
+                'message':'Record updated'
+            }
+        else:
+            return{
+                'status': 'error',
+                'message': f'Record with id {_id} not found'
+            }
+    except Exception as e:
+        return {
+            'status': 'error',
+            'message': str(e)
+        }
+
 #delete
+def delete(_id:int):
+    try:
+        criteria = {"_id":_id}
+        res = db_session.query(Todo).filter_by(**criteria).one_or_none() #query one todo entries from the databse #sql_model
+        if res is not None:
+            db_session.delete(res)
+            db_session.commit()
+            return {
+                'status': 'ok',
+                'message':'Record Deleted'
+            }
+        else:
+            return{
+                'status': 'error',
+                'message': f'Record with id {_id} not found'
+            }
+    except Exception as e:
+        return {
+            'status': 'error',
+            'message': str(e)
+        }
+
 
 
 # res = create_todo("Machine Learning with Python")
 # print(res)
 
-res = get_all()
-print(res)
+# res = get_all()
+# print(res)
+
+# res = get_one(1)
+# print(res)
+
+# new = update(2,'Creating a Website')
+# print(new)
+
+delete_todo = delete(2)
+print(delete_todo)

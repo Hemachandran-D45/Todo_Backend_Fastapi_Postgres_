@@ -128,5 +128,5 @@ def delete(_id:int):
 # new = update(2,'Creating a Website')
 # print(new)
 
-delete_todo = delete(2)
-print(delete_todo)
+# delete_todo = delete(2)
+# print(delete_todo)

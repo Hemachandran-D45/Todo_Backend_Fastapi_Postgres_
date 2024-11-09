@@ -8,7 +8,7 @@ from  model.sql_model import BASE
 db_user: str  = 'postgres'
 db_port: int = 5432
 db_host: str = 'localhost'
-db_password: str = '4065'
+db_password: str = '4065',
 uri:str = F'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/to-do' #sqlalchemy use URI to connect with db
 
 
